@@ -8,7 +8,7 @@ import glob
 from pathlib import Path
 import boto3
 
-f = open("~/.streamlit/configs.toml","w+")
+f = open("~/.streamlit/config.toml","w+")
 f.write('[theme]\n base="light"\n primaryColor="#ffc107"\n backgroundColor="#264899"\n secondaryBackgroundColor="#264899"\n textColor="#fafafa"\n font="sans serif"')
 f.close()
 
