@@ -1,0 +1,175 @@
+import streamlit as st
+import PIL
+from PIL import Image
+import pandas as pd
+import io
+import os
+from datetime import datetime
+import plotly.express as px
+from st_aggrid import AgGrid
+import webbrowser
+
+pd.set_option('display.max_columns', None)
+#Logo image is not used
+image = Image.open('logo_diff.png')
+st.set_page_config(page_title='EOSC Testsuite Results Dashboard',page_icon=image,layout='wide',initial_sidebar_state='auto')
+#st.write('<style>body { margin: 0; font-family: Arial, Helvetica, sans-serif;} .header{padding: 40px 50%; background: #264899; color: #f1f1f1; position:;top:100;} .header img {float: left; width:100px;height:100px;} .sticky { position: fixed; top: 0; width: 100%;} </style><div class="header" id="myHeader"></div>', unsafe_allow_html=True)
+
+#os.system('python dataset_gen.py')
+# simple description
+# display media
+#st.image(image, caption='source: https://pixabay.com/photos/mario-luigi-yoschi-figures-funny-1557240/',
+#           use_column_width=True)
+#col1, col2 = st.beta_columns(2)
+st.image(image)
+#col1.image(image,width = 335)#use_column_width=True
+
+#col2.title('EOSC Testsuite Results Dashboard')
+
+m = st.markdown("""
+<style>
+div.stButton > button:first-child {
+    background-color: #ffc107;
+    color:#000000;
+}
+div.stButton > button:hover {
+    background-color: #ffc107;
+    color:#000000;
+    }
+body {
+    background-color: lightgoldenrodyellow;
+}
+div[role="listbox"] ul {
+    background-color: #264899;
+}
+</style>""", unsafe_allow_html=True)
+
+#b = st.button("Link to Repository")
+st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/) and [ARCHIVER](https://archiver-project.eu/).')
+st.write('Visit [EOSC website](https://eosc.eu/) for more information.')
+if st.button('EOSC Test Suite Repository'):
+        webbrowser.open_new_tab('https://github.com/cern-it-efp/EOSC-Testsuite')
+#st.write('Please find the the repository [here](https://github.com/cern-it-efp/EOSC-Testsuite).')
+st.write('In this webpage we provide results from different runs for several tests run by EOSC test suite across different providers.')
+# 2 types of heading - header and subheader
+#st.header('Exploratory Data Analysis')
+# markdown similar to github md and also has support for some cool graphics
+# in form of emojis full list here: https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
+
+df_cpu_bmk = pd.read_csv('summary_cpu_bench.csv', names = ['Provider','Flavor','Location','Run Date','Score','Score Per Core','CPU Model','Start Date and Time','End Date and Time'])
+df_perfsonar = pd.read_csv('summary_perfsonar.csv', names = ['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)'])
+df_dodas = pd.read_csv('summary_dodas.csv', names=['Provider','Flavor','Location','Run Date','Result'])
+df_data_repatriation = pd.read_csv('summary_data_repatriation.csv', names=['Provider','Flavor','Location','Run Date','Result'])
+df_cpd = pd.read_csv('cpd.csv')
+
+df_cpu_bmk['Provider'] = df_cpu_bmk['Provider'].replace({'google':'google cloud platform'})
+df_perfsonar['Provider'] = df_perfsonar['Provider'].replace({'google':'google cloud platform'})
+df_dodas['Provider'] = df_dodas['Provider'].replace({'google':'google cloud platform'})
+df_data_repatriation['Provider'] = df_data_repatriation['Provider'].replace({'google':'google cloud platform'})
+df_cpd['Vendor'] = df_cpd['Vendor'].replace({'google':'google cloud platform'})
+
+df_perfsonar['Max Latency (ms)'] = 1000*df_perfsonar['Max Latency (ms)']
+df_perfsonar['Min Latency (ms)'] = 1000*df_perfsonar['Min Latency (ms)']
+df_perfsonar['Mean Latency (ms)'] = 1000*df_perfsonar['Mean Latency (ms)']
+
+df_cpu_bmk = df_cpu_bmk.sort_values(by=['Run Date'],ascending = False)
+df_perfsonar = df_perfsonar.sort_values(by=['Run Date'],ascending = False)
+df_dodas = df_dodas.sort_values(by=['Run Date'],ascending = False)
+df_data_repatriation = df_data_repatriation.sort_values(by=['Run Date'],ascending = False)
+
+df_data_repatriation.loc[-1] = ['',0,0,0,0]
+df_data_repatriation.index = df_data_repatriation.index+1
+df_data_repatriation.sort_index(inplace=True)
+
+# drop down for unique value from a column
+provider_name = st.selectbox('Select a Provider', options=df_data_repatriation.Provider.unique())
+if (provider_name!=''):
+    df_cpu_bmk = df_cpu_bmk[df_cpu_bmk.Provider !='']
+    df_cpu_bmk = df_cpu_bmk.loc[df_cpu_bmk.Provider == provider_name]
+
+    df_cpu_bmk = df_cpu_bmk.drop_duplicates(subset=['Location'], keep='first')
+    df_perfsonar = df_perfsonar.loc[df_perfsonar.Provider == provider_name]
+    df_perfsonar = df_perfsonar.drop_duplicates(subset=['Location'], keep='first')
+
+    df_dodas = df_dodas.loc[df_dodas.Provider == provider_name]
+    df_dodas = df_dodas.drop_duplicates(subset=['Location'], keep='first')
+
+    df_data_repatriation = df_data_repatriation.loc[df_data_repatriation.Provider == provider_name]
+    df_data_repatriation = df_data_repatriation.drop_duplicates(subset=['Location'], keep='first')
+
+    df_cpd = df_cpd.loc[df_cpd.Vendor == provider_name]
+    df_perf_rtt = df_perfsonar[['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)']]
+    df_perf_bwt = df_perfsonar[['Provider','Flavor','Location','Run Date','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)']]
+
+    #amazon = 'logos/aws.png'
+    #azure = 'logos/azure.png'
+    #cloudferro = 'logos/cloudferro.png'
+    #cloudsigma = 'logos/cloudsigma.png'
+    #exoscale = 'logos/exoscale.jpg'
+    #google = 'logos/gcp.png'
+    #ibm = 'logos/ibm.png'
+    #ionoscloud = 'logos/ionos.png'
+    #oracle = 'logos/oracle.png'
+    #ovh = 'logos/ovh.png'
+    #tsystems = 'logos/tsystems.png'
+    #xion = 'logos/xion.png'
+
+    logo_image = Image.open('logos/'+str(provider_name)+'.png')
+    #logo_image = logo_image.resize((900,400),Image.ANTIALIAS)
+    st.image(logo_image,width = 300)
+    st.header('Cloud Platform Details')     
+    AgGrid(df_cpd, height = 75, fit_columns_on_grid_load=False)
+    #st.dataframe(df_cpd)
+    if (str(provider_name)=="x-ion"):
+        df_cost = pd.read_csv('cosbench_demo/s3-main_CERN_to_xion.csv')
+        #df_cost_bench = df_cost
+        st.subheader('Cloud Object Storage Benchmark (COSBench)')
+        AgGrid(df_cost, height = 250, fit_columns_on_grid_load=False)
+
+    st.header('Dynamic On Demand Analysis Services test (DODAS) Test Results')
+    st.write('DODAS is a system designed to provide a high level of automation in terms of provisioning, creating, managing and accessing a pool of heterogeneous computing and storage resources, by generating clusters on demand for the execution of HTCondor workload management system. DODAS allows to seamlessly join the HTCondor Global Pool of CMS to enable the dynamic extension of existing computing resources. A benefit of such an architecture is that it provides high scaling capabilities and self-healing support that results in a drastic reduction of time and cost, through setup and operational efficiency increases.')
+    #st.write('If one wants to deploy this test, the machines in the general cluster (to which such test is deployed), should have rather large disks as the image for this test is 16GB. To set the disk size use the storageCapacity variable from configs.yaml.')
+    if st.button('More Information', key = 1):
+        webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#dodas-dynamic-on-demand-analysis-services-test')
+    #st.write('[Repository](https://dodas-ts.github.io/dodas-doc/)')
+    AgGrid(df_dodas, height = 150, fit_columns_on_grid_load=False)
+    st.header('Data Repatriation Test Results')
+    st.write('When using cloud credits, when the credit is exhausted, data can be repatriated or moved to a long-term data storage service. The example used in this test uses Zenodo service maintained by CERN, verifying that the output data can be taken from the cloud provider to Zenodo.')
+    if st.button('More Information', key = 2):
+        webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#data-export-from-the-commercial-cloud-provider-to-zenodo')
+    #st.write('[Repository](https://github.com/cern-it-efp/cloud-exporter)')
+    AgGrid(df_data_repatriation, height = 150.00001, fit_columns_on_grid_load=False)
+
+    fig_cpu_bmk = px.bar(df_cpu_bmk, x="Location", y=["Score", "Score Per Core"], barmode='group', range_y = (0,300),height=500)
+    fig_perfsonar = px.bar(df_perfsonar, x="Location", y=["Min Latency (ms)", "Mean Latency (ms)","Max Latency (ms)"], barmode='group', range_y = (0,50), height=500)
+    fig_perfsonar_bandwidth = px.bar(df_perfsonar,x="Location",y=["Bandwidth From CERN To Provider (Gbps)","Bandwidth From Provider To CERN (Gbps)"], barmode='group',range_y=(0,10), height=500)
+    st.header('High Energy Physics CPU Benchmarking Results')
+    st.write('Benchmarking relying on a suite containing several High Energy Physics (HEP) based benchmarks.')
+    if st.button('More Information',key = 3):
+        webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking')
+    #st.write('[Repository](https://gitlab.cern.ch/hep-benchmarks/hep-benchmark-suite)')
+    AgGrid(df_cpu_bmk, height = 150.0001, fit_columns_on_grid_load=False)
+    #st.write('CPU Model: '+str(df_cpu_bmk.iloc[0,6]))
+    st.plotly_chart(fig_cpu_bmk,config= {'displaylogo': False})
+    st.header('Networking performance measurements')
+    st.write('perfSONAR is a network measurement toolkit designed to provide federated coverage of paths, and help to establish end-to-end usage expectations.')
+    st.write('In this test, a perfSONAR testpoint is created using a containerised approach on the cloud provider infrastructure.')
+    if st.button('More Information',key = 4):
+        webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements')
+    #st.write('[Repository](https://github.com/perfsonar/perfsonar-testpoint-docker)')
+    st.subheader('perfSONAR Round Trip Time Test Results')
+    st.write("Measure the round trip time and related statistics between CERN and the provider.")
+    AgGrid(df_perf_rtt, height = 150.001, fit_columns_on_grid_load=False)
+    st.plotly_chart(fig_perfsonar,config= {'displaylogo': False})
+    st.subheader('perfSONAR Bandwidth Test Results')
+    st.write("A test to measure the observed speed of a data transfer and associated statistics between CERN and the provider.")
+    AgGrid(df_perf_bwt, height = 150.01, fit_columns_on_grid_load=False)
+    st.plotly_chart(fig_perfsonar_bandwidth,config= {'displaylogo': False})
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)

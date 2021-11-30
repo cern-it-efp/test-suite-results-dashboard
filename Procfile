@@ -1,0 +1,1 @@
+web: sh setup.sh && python dataset_gen.py

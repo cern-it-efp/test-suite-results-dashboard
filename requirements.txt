@@ -1,0 +1,8 @@
+streamlit==0.85.0
+streamlit-aggrid
+Pillow==8.3.1
+pandas
+numpy
+boto3==1.18.29
+plotly==5.2.2
+pyaml
