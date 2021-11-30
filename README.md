@@ -12,6 +12,7 @@ We have tested the following providers across High Energy Physics Benchmark, Per
 - Cloudferro
 - OVH
 - X-ion
+
 The Dashboard will include results from a few other providers over the coming time.
 
 To launch the dashboard locally:
