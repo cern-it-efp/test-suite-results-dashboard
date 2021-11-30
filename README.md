@@ -2,6 +2,8 @@
 The following repository contains source code used in order to create a heroku app for visualizing the results of several workloads across different providers using the [EOSC TestSuite](https://github.com/cern-it-efp/EOSC-Testsuite).
 The TestSuite Dashboard pulls the latest results from the S3 container where the json results from each successful run are uploaded and updates the workload performance across different providers based on the latest run.
 We have tested the following providers across High Energy Physics Benchmark, PerfSONAR, Data Repatriation and DODAS.
+- City Network
+- Layershift
 - Google Cloud Platform
 - IBM Cloud
 - Exoscale
