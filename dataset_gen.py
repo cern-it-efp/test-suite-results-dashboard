@@ -14,7 +14,7 @@ import boto3
 
 import yaml
 
-with open("../creds.yaml", 'r') as inputfile:
+with open("/tmp/creds.yaml", 'r') as inputfile:
     s3_creds = yaml.load(inputfile, Loader=yaml.FullLoader)
 
 OPENSTACK_ACC = s3_creds["OPENSTACK_ACC"]
