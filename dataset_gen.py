@@ -205,4 +205,4 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
     gc.collect()
 
 os.system("echo PORT $PORT")
-os.system('streamlit run --server.port $PORT app.py')
+#os.system('streamlit run --server.port $PORT app.py')
