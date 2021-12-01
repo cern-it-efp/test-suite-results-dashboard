@@ -1,7 +1,7 @@
 FROM python:3.6
 WORKDIR /tmp
 RUN git clone https://github.com/cern-it-efp/test-suite-results-dashboard.git
-WORKDIR /test-suite-results-dashboard
+WORKDIR /tmp/test-suite-results-dashboard
 RUN pip install pystrich
 RUN pip install -r requirements.txt
 RUN apt-get install -y nano
