@@ -56,11 +56,11 @@ st.write('In this webpage we provide results from different runs for several tes
 # markdown similar to github md and also has support for some cool graphics
 # in form of emojis full list here: https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
 
-df_cpu_bmk = pd.read_csv('summary_cpu_bench.csv', names = ['Provider','Flavor','Location','Run Date','Score','Score Per Core','CPU Model','Start Date and Time','End Date and Time'])
-df_perfsonar = pd.read_csv('summary_perfsonar.csv', names = ['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)'])
-df_dodas = pd.read_csv('summary_dodas.csv', names=['Provider','Flavor','Location','Run Date','Result'])
-df_data_repatriation = pd.read_csv('summary_data_repatriation.csv', names=['Provider','Flavor','Location','Run Date','Result'])
-df_cpd = pd.read_csv('cpd.csv')
+df_cpu_bmk = pd.read_csv('/tmp/summary_cpu_bench.csv', names = ['Provider','Flavor','Location','Run Date','Score','Score Per Core','CPU Model','Start Date and Time','End Date and Time'])
+df_perfsonar = pd.read_csv('/tmp/summary_perfsonar.csv', names = ['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)'])
+df_dodas = pd.read_csv('/tmp/summary_dodas.csv', names=['Provider','Flavor','Location','Run Date','Result'])
+df_data_repatriation = pd.read_csv('/tmp/summary_data_repatriation.csv', names=['Provider','Flavor','Location','Run Date','Result'])
+df_cpd = pd.read_csv('/tmp/cpd.csv')
 
 df_cpu_bmk['Provider'] = df_cpu_bmk['Provider'].replace({'google':'google cloud platform'})
 df_perfsonar['Provider'] = df_perfsonar['Provider'].replace({'google':'google cloud platform'})

@@ -20,8 +20,8 @@ with open("/tmp/creds.yaml", 'r') as inputfile:
 OPENSTACK_ACC = s3_creds["OPENSTACK_ACC"]
 OPENSTACK_KEY = s3_creds["OPENSTACK_KEY"]
 
-my_file = Path("summary_perfsonar.csv")
-my_file_new = Path("cpd.csv")
+my_file = Path("/tmp/summary_perfsonar.csv")
+my_file_new = Path("/tmp/cpd.csv")
 if my_file.is_file()==True or my_file_new.is_file()==True:
    os.system("rm -r *.csv")
 
@@ -86,7 +86,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 df_general = json.load(io.BytesIO(obj_general['Body'].read()))
                 gc.collect()
 
-                with open('summary_perfsonar.csv', 'a+') as f:
+                with open('/tmp/summary_perfsonar.csv', 'a+') as f:
                     if(str(key['Key']).split('/')[0]=="cloudferro"):
                         if df_perfsonar[3]['succeeded']!=False:
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+"waw_pl"+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[3]['summary']['summary']['throughput-bits']/1000000000)+", "+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+"\n")
@@ -137,7 +137,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 df_general = json.load(io.BytesIO(obj_general['Body'].read()))
                 gc.collect()
 
-                with open('summary_dodas.csv', 'a+') as f:
+                with open('/tmp/summary_dodas.csv', 'a+') as f:
                     if(str(key['Key']).split('/')[0]=="cloudferro"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+"waw_pl"+", "+str(key['Key']).split('/')[1]+", "+str(df_dodas["result"])+"\n")
                     elif(str(key['Key']).split('/')[0]=="ionoscloud"):
@@ -169,7 +169,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 df_general = json.load(io.BytesIO(obj_general['Body'].read()))
                 gc.collect()
 
-                with open('summary_data_repatriation.csv', 'a+') as f:
+                with open('/tmp/summary_data_repatriation.csv', 'a+') as f:
                     if(str(key['Key']).split('/')[0]=="cloudferro"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+"waw_pl"+", "+str(key['Key']).split('/')[1]+", "+str(df_data_repatriation["result"])+"\n")
                     elif(str(key['Key']).split('/')[0]=="ionoscloud"):
