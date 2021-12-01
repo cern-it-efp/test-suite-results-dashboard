@@ -35,7 +35,7 @@ client_s3=boto3.client(
 cloud_platform_details = "Cloud Platforms Details - Sheet1_min.csv"
 obj_cpd=client_s3.get_object(Bucket='ocre-results', Key=cloud_platform_details)
 df_cpd = pd.read_csv(io.BytesIO(obj_cpd['Body'].read()))
-df_cpd.to_csv('cpd.csv',index=False)
+df_cpd.to_csv('/tmp/cpd.csv',index=False)
 
 for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
     #print(str(str(key['Key']).split('/')[-1]).split('.')[-1])
