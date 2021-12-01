@@ -54,7 +54,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 obj_cpu_bench=client_s3.get_object(Bucket='ocre-results',Key=source_cpu_bench)
                 df_cpu_bench = json.load(io.BytesIO(obj_cpu_bench['Body'].read()))
                 gc.collect()
-                with open('summary_cpu_bench.csv', 'a+') as f:                        
+                with open('/tmp/summary_cpu_bench.csv', 'a+') as f:                        
                     if(str(key['Key']).split('/')[0]=="cloudferro"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+"waw_pl"+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+", "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")
                     elif(str(key['Key']).split('/')[0]=="ionoscloud"):
