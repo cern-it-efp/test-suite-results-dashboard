@@ -50,7 +50,7 @@ div[data-baseweb="select"] > div {
 
 
 #b = st.button("Link to Repository")
-st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/) and [ARCHIVER](https://archiver-project.eu/).')
+st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/), [ARCHIVER](https://archiver-project.eu/) and [CloudBank EU](https://ngiatlantic.eu/funded-experiments/cloudbank-eu-ngi)')
 st.write('Visit [EOSC website](https://eosc.eu/) for more information.')
 if st.button('EOSC Test Suite Repository'):
     js = "window.open('https://github.com/cern-it-efp/EOSC-Testsuite')"  # New tab or window
