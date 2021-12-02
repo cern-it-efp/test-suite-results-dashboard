@@ -8,6 +8,7 @@ from datetime import datetime
 import plotly.express as px
 from st_aggrid import AgGrid
 import webbrowser
+from bokeh.models.widgets import Div
 
 pd.set_option('display.max_columns', None)
 #Logo image is not used
@@ -46,6 +47,13 @@ div[data-baseweb="select"] > div {
     background-color: #3b5aa3;
 }
 </style>""", unsafe_allow_html=True)
+
+if st.button('Go to Streamlit'):
+    js = "window.open('https://www.streamlit.io/')"  # New tab or window
+    js = "window.location.href = 'https://www.streamlit.io/'"  # Current tab
+    html = '<img src onerror="{}">'.format(js)
+    div = Div(text=html)
+    st.bokeh_chart(div)
 
 #b = st.button("Link to Repository")
 st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/) and [ARCHIVER](https://archiver-project.eu/).')
