@@ -8,7 +8,6 @@ from datetime import datetime
 import plotly.express as px
 from st_aggrid import AgGrid
 import webbrowser
-from bokeh.models.widgets import Div
 
 pd.set_option('display.max_columns', None)
 #Logo image is not used
@@ -52,7 +51,7 @@ div[data-baseweb="select"] > div {
 st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/) and [ARCHIVER](https://archiver-project.eu/).')
 st.write('Visit [EOSC website](https://eosc.eu/) for more information.')
 if st.button('EOSC Test Suite Repository'):
-        webbrowser.open_new_tab('https://github.com/cern-it-efp/EOSC-Testsuite')
+        webbrowser.open_new('https://github.com/cern-it-efp/EOSC-Testsuite')
 #st.write('Please find the the repository [here](https://github.com/cern-it-efp/EOSC-Testsuite).')
 st.write('In this webpage we provide results from different runs for several tests run by EOSC test suite across different providers.')
 #st.header('Exploratory Data Analysis')
@@ -150,24 +149,15 @@ if (provider_name!=''):
     st.write('DODAS is a system designed to provide a high level of automation in terms of provisioning, creating, managing and accessing a pool of heterogeneous computing and storage resources, by generating clusters on demand for the execution of HTCondor workload management system. DODAS allows to seamlessly join the HTCondor Global Pool of CMS to enable the dynamic extension of existing computing resources. A benefit of such an architecture is that it provides high scaling capabilities and self-healing support that results in a drastic reduction of time and cost, through setup and operational efficiency increases.')
     #st.write('If one wants to deploy this test, the machines in the general cluster (to which such test is deployed), should have rather large disks as the image for this test is 16GB. To set the disk size use the storageCapacity variable from configs.yaml.')
     if st.button('More Information', key = 1):
-        js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#dodas-dynamic-on-demand-analysis-services-test')"  # New tab or window
-        js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#dodas-dynamic-on-demand-analysis-services-test'"  # Current tab
-        html = '<img src onerror="{}">'.format(js)
-        div = Div(text=html)
-        st.bokeh_chart(div)
+        webbrowser.open_new('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#dodas-dynamic-on-demand-analysis-services-test')
     #st.write('[Repository](https://dodas-ts.github.io/dodas-doc/)')
     AgGrid(df_dodas, height = 150, fit_columns_on_grid_load=False)
     st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     st.header('Data Repatriation Test Results')
     st.write('When using cloud credits, when the credit is exhausted, data can be repatriated or moved to a long-term data storage service. The example used in this test uses Zenodo service maintained by CERN, verifying that the output data can be taken from the cloud provider to Zenodo.')
-
     if st.button('More Information', key = 2):
-        js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#data-export-from-the-commercial-cloud-provider-to-zenodo')"  # New tab or window
-        js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#data-export-from-the-commercial-cloud-provider-to-zenodo'"  # Current tab
-        html = '<img src onerror="{}">'.format(js)
-        div = Div(text=html)
-        st.bokeh_chart(div)
+        webbrowser.open_new('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#data-export-from-the-commercial-cloud-provider-to-zenodo')
     #st.write('[Repository](https://github.com/cern-it-efp/cloud-exporter)')
     AgGrid(df_data_repatriation, height = 150.00001, fit_columns_on_grid_load=False)
     fig_cpu_bmk = px.bar(df_cpu_bmk, x="Location", y=["Score", "Score Per Core"], barmode='group', range_y = (0,300),height=500)
@@ -178,12 +168,8 @@ if (provider_name!=''):
 
     st.header('High Energy Physics CPU Benchmarking Results')
     st.write('Benchmarking relying on a suite containing several High Energy Physics (HEP) based benchmarks.')
-    if st.button('More Information', key = 3):
-        js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking')"  # New tab or window
-        js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking'"  # Current tab
-        html = '<img src onerror="{}">'.format(js)
-        div = Div(text=html)
-        st.bokeh_chart(div)
+    if st.button('More Information',key = 3):
+        webbrowser.open_new('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking')
     #st.write('[Repository](https://gitlab.cern.ch/hep-benchmarks/hep-benchmark-suite)')
     AgGrid(df_cpu_bmk, height = 150.0001, fit_columns_on_grid_load=False)
     #st.write('CPU Model: '+str(df_cpu_bmk.iloc[0,6]))
@@ -193,12 +179,8 @@ if (provider_name!=''):
     st.header('Networking performance measurements')
     st.write('perfSONAR is a network measurement toolkit designed to provide federated coverage of paths, and help to establish end-to-end usage expectations.')
     st.write('In this test, a perfSONAR testpoint is created using a containerised approach on the cloud provider infrastructure.')
-    if st.button('More Information', key = 4):
-        js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements')"  # New tab or window
-        js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements'"  # Current tab
-        html = '<img src onerror="{}">'.format(js)
-        div = Div(text=html)
-        st.bokeh_chart(div)
+    if st.button('More Information',key = 4):
+        webbrowser.open_new('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements')
     #st.write('[Repository](https://github.com/perfsonar/perfsonar-testpoint-docker)')
     st.subheader('perfSONAR Round Trip Time Test Results')
     st.write("Measure the round trip time and related statistics between CERN and the provider.")
@@ -213,12 +195,8 @@ if (provider_name!=''):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         st.header('ProGAN Test Results')
         st.write('Algorithm training of an advanced GAN model (ProGAN). This benchmark is run on a single virtual machine, with a single NVIDIA V100 GPU.')
-        if st.button('More Information', key = 5):
-            js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus')"  # New tab or window
-            js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus'"  # Current tab
-            html = '<img src onerror="{}">'.format(js)
-            div = Div(text=html)
-            st.bokeh_chart(div)
+        if st.button('More Information',key = 5):
+            webbrowser.open_new('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus')
         AgGrid(df_progan, height = 150.0001, fit_columns_on_grid_load=False)
         #st.plotly_chart(fig_progan,config= {'displaylogo': False})
 
