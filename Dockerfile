@@ -3,6 +3,7 @@ WORKDIR /tmp
 RUN apt-get update -y
 RUN apt-get install -y nano wget
 RUN wget https://raw.githubusercontent.com/cern-it-efp/test-suite-results-dashboard/main/requirements.txt
+ENV HOME="/tmp"
 RUN pip install -r requirements.txt
 EXPOSE 8501
 EXPOSE 80
@@ -11,7 +12,6 @@ RUN wget https://raw.githubusercontent.com/cern-it-efp/test-suite-results-dashbo
 RUN wget https://raw.githubusercontent.com/cern-it-efp/test-suite-results-dashboard/main/.streamlit/credentials.toml
 RUN mv config.toml /tmp/.streamlit/
 RUN mv credentials.toml /tmp/.streamlit/
-ENV HOME="/tmp"
 RUN pip install --upgrade streamlit
 ENTRYPOINT echo 'Cloning repository...' && \
            git clone -q https://github.com/cern-it-efp/test-suite-results-dashboard.git && \

@@ -42,6 +42,9 @@ body {
 div[role="listbox"] ul {
     background-color: #264899;
 }
+div[data-baseweb="select"] > div {
+    background-color: #3b5aa3;
+}
 </style>""", unsafe_allow_html=True)
 
 #b = st.button("Link to Repository")
@@ -51,7 +54,6 @@ if st.button('EOSC Test Suite Repository'):
         webbrowser.open_new_tab('https://github.com/cern-it-efp/EOSC-Testsuite')
 #st.write('Please find the the repository [here](https://github.com/cern-it-efp/EOSC-Testsuite).')
 st.write('In this webpage we provide results from different runs for several tests run by EOSC test suite across different providers.')
-# 2 types of heading - header and subheader
 #st.header('Exploratory Data Analysis')
 # markdown similar to github md and also has support for some cool graphics
 # in form of emojis full list here: https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
@@ -60,29 +62,39 @@ df_cpu_bmk = pd.read_csv('/tmp/summary_cpu_bench.csv', names = ['Provider','Flav
 df_perfsonar = pd.read_csv('/tmp/summary_perfsonar.csv', names = ['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)'])
 df_dodas = pd.read_csv('/tmp/summary_dodas.csv', names=['Provider','Flavor','Location','Run Date','Result'])
 df_data_repatriation = pd.read_csv('/tmp/summary_data_repatriation.csv', names=['Provider','Flavor','Location','Run Date','Result'])
+df_progan = pd.read_csv('/tmp/summary_progan.csv',names = ['Provider','Flavor','Location','Run Date','Images Amount','Kimg','GPU Type','GPU per Nodes','Time (Minutes)'])
 df_cpd = pd.read_csv('/tmp/cpd.csv')
 
 df_cpu_bmk['Provider'] = df_cpu_bmk['Provider'].replace({'google':'google cloud platform'})
+df_cpu_bmk['Provider'] = df_cpu_bmk['Provider'].replace({'flexibleengine':'orange'})
 df_perfsonar['Provider'] = df_perfsonar['Provider'].replace({'google':'google cloud platform'})
+df_perfsonar['Provider'] = df_perfsonar['Provider'].replace({'flexibleengine':'orange'})
 df_dodas['Provider'] = df_dodas['Provider'].replace({'google':'google cloud platform'})
+df_dodas['Provider'] = df_dodas['Provider'].replace({'flexibleengine':'orange'})
 df_data_repatriation['Provider'] = df_data_repatriation['Provider'].replace({'google':'google cloud platform'})
+df_data_repatriation['Provider'] = df_data_repatriation['Provider'].replace({'flexibleengine':'orange'})
+df_progan['Provider'] = df_progan['Provider'].replace({'google':'google cloud platform'})
+df_progan['Provider'] = df_progan['Provider'].replace({'flexibleengine':'orange'})
 df_cpd['Vendor'] = df_cpd['Vendor'].replace({'google':'google cloud platform'})
+df_cpd['Vendor'] = df_cpd['Vendor'].replace({'flexibleengine':'orange'})
 
 df_perfsonar['Max Latency (ms)'] = 1000*df_perfsonar['Max Latency (ms)']
 df_perfsonar['Min Latency (ms)'] = 1000*df_perfsonar['Min Latency (ms)']
 df_perfsonar['Mean Latency (ms)'] = 1000*df_perfsonar['Mean Latency (ms)']
+df_progan['Time (Minutes)'] = df_progan['Time (Minutes)']/60
 
 df_cpu_bmk = df_cpu_bmk.sort_values(by=['Run Date'],ascending = False)
 df_perfsonar = df_perfsonar.sort_values(by=['Run Date'],ascending = False)
 df_dodas = df_dodas.sort_values(by=['Run Date'],ascending = False)
 df_data_repatriation = df_data_repatriation.sort_values(by=['Run Date'],ascending = False)
+df_progan = df_progan.sort_values(by=['Run Date'],ascending = False)
 
 df_data_repatriation.loc[-1] = ['',0,0,0,0]
 df_data_repatriation.index = df_data_repatriation.index+1
 df_data_repatriation.sort_index(inplace=True)
 
 # drop down for unique value from a column
-provider_name = st.selectbox('Select a Provider', options=df_data_repatriation.Provider.unique())
+provider_name = st.selectbox('Select a Provider from the dropdown below', options=df_data_repatriation.Provider.unique())
 if (provider_name!=''):
     df_cpu_bmk = df_cpu_bmk[df_cpu_bmk.Provider !='']
     df_cpu_bmk = df_cpu_bmk.loc[df_cpu_bmk.Provider == provider_name]
@@ -97,6 +109,9 @@ if (provider_name!=''):
     df_data_repatriation = df_data_repatriation.loc[df_data_repatriation.Provider == provider_name]
     df_data_repatriation = df_data_repatriation.drop_duplicates(subset=['Location'], keep='first')
 
+    df_progan = df_progan.loc[df_progan.Provider == provider_name]
+    df_progan = df_progan.drop_duplicates(subset=['Location'], keep='first')
+    
     df_cpd = df_cpd.loc[df_cpd.Vendor == provider_name]
     df_perf_rtt = df_perfsonar[['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)']]
     df_perf_bwt = df_perfsonar[['Provider','Flavor','Location','Run Date','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)']]
@@ -119,12 +134,16 @@ if (provider_name!=''):
     st.image(logo_image,width = 300)
     st.header('Cloud Platform Details')     
     AgGrid(df_cpd, height = 75, fit_columns_on_grid_load=False)
+    #st.markdown("""<hr style="height:5px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
     #st.dataframe(df_cpd)
     if (str(provider_name)=="x-ion"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         df_cost = pd.read_csv('cosbench_demo/s3-main_CERN_to_xion.csv')
         #df_cost_bench = df_cost
-        st.subheader('Cloud Object Storage Benchmark (COSBench)')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
         AgGrid(df_cost, height = 250, fit_columns_on_grid_load=False)
+    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     st.header('Dynamic On Demand Analysis Services test (DODAS) Test Results')
     st.write('DODAS is a system designed to provide a high level of automation in terms of provisioning, creating, managing and accessing a pool of heterogeneous computing and storage resources, by generating clusters on demand for the execution of HTCondor workload management system. DODAS allows to seamlessly join the HTCondor Global Pool of CMS to enable the dynamic extension of existing computing resources. A benefit of such an architecture is that it provides high scaling capabilities and self-healing support that results in a drastic reduction of time and cost, through setup and operational efficiency increases.')
@@ -133,16 +152,20 @@ if (provider_name!=''):
         webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#dodas-dynamic-on-demand-analysis-services-test')
     #st.write('[Repository](https://dodas-ts.github.io/dodas-doc/)')
     AgGrid(df_dodas, height = 150, fit_columns_on_grid_load=False)
+    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
     st.header('Data Repatriation Test Results')
     st.write('When using cloud credits, when the credit is exhausted, data can be repatriated or moved to a long-term data storage service. The example used in this test uses Zenodo service maintained by CERN, verifying that the output data can be taken from the cloud provider to Zenodo.')
     if st.button('More Information', key = 2):
         webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#data-export-from-the-commercial-cloud-provider-to-zenodo')
     #st.write('[Repository](https://github.com/cern-it-efp/cloud-exporter)')
     AgGrid(df_data_repatriation, height = 150.00001, fit_columns_on_grid_load=False)
-
     fig_cpu_bmk = px.bar(df_cpu_bmk, x="Location", y=["Score", "Score Per Core"], barmode='group', range_y = (0,300),height=500)
     fig_perfsonar = px.bar(df_perfsonar, x="Location", y=["Min Latency (ms)", "Mean Latency (ms)","Max Latency (ms)"], barmode='group', range_y = (0,50), height=500)
     fig_perfsonar_bandwidth = px.bar(df_perfsonar,x="Location",y=["Bandwidth From CERN To Provider (Gbps)","Bandwidth From Provider To CERN (Gbps)"], barmode='group',range_y=(0,10), height=500)
+    fig_progan = px.bar(df_progan,x="Location",y=['Time (Minutes)'], barmode='group', width = 250, height=500)
+    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
     st.header('High Energy Physics CPU Benchmarking Results')
     st.write('Benchmarking relying on a suite containing several High Energy Physics (HEP) based benchmarks.')
     if st.button('More Information',key = 3):
@@ -151,6 +174,8 @@ if (provider_name!=''):
     AgGrid(df_cpu_bmk, height = 150.0001, fit_columns_on_grid_load=False)
     #st.write('CPU Model: '+str(df_cpu_bmk.iloc[0,6]))
     st.plotly_chart(fig_cpu_bmk,config= {'displaylogo': False})
+    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
     st.header('Networking performance measurements')
     st.write('perfSONAR is a network measurement toolkit designed to provide federated coverage of paths, and help to establish end-to-end usage expectations.')
     st.write('In this test, a perfSONAR testpoint is created using a containerised approach on the cloud provider infrastructure.')
@@ -165,6 +190,16 @@ if (provider_name!=''):
     st.write("A test to measure the observed speed of a data transfer and associated statistics between CERN and the provider.")
     AgGrid(df_perf_bwt, height = 150.01, fit_columns_on_grid_load=False)
     st.plotly_chart(fig_perfsonar_bandwidth,config= {'displaylogo': False})
+    
+    if len(df_progan)>0:
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        st.header('ProGAN Test Results')
+        st.write('Algorithm training of an advanced GAN model (ProGAN). This benchmark is run on a single virtual machine, with a single NVIDIA V100 GPU.')
+        if st.button('More Information',key = 5):
+            webbrowser.open_new_tab('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus')
+        AgGrid(df_progan, height = 150.0001, fit_columns_on_grid_load=False)
+        #st.plotly_chart(fig_progan,config= {'displaylogo': False})
+
 
 hide_streamlit_style = """
             <style>

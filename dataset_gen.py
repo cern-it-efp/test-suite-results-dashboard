@@ -23,7 +23,7 @@ OPENSTACK_KEY = s3_creds["OPENSTACK_KEY"]
 my_file = Path("/tmp/summary_perfsonar.csv")
 my_file_new = Path("/tmp/cpd.csv")
 if my_file.is_file()==True or my_file_new.is_file()==True:
-   os.system("rm -r *.csv")
+   os.system("rm -r /tmp/*.csv")
 
 client_s3=boto3.client(
     "s3",
@@ -39,7 +39,7 @@ df_cpd.to_csv('/tmp/cpd.csv',index=False)
 
 for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
     #print(str(str(key['Key']).split('/')[-1]).split('.')[-1])
-    if(str(key['Key']).split('/')[0]=="google" or str(key['Key']).split('/')[0]=="aws" or str(key['Key']).split('/')[0]=="cloudferro" or str(key['Key']).split('/')[0]=="cloudsigma" or str(key['Key']).split('/')[0]=="azurerm" or str(key['Key']).split('/')[0]=="exoscale" or str(key['Key']).split('/')[0]=="ionoscloud" or str(key['Key']).split('/')[0]=="oci" or str(key['Key']).split('/')[0]=="opentelekomcloud" or str(key['Key']).split('/')[0]=="ovh" or str(key['Key']).split('/')[0]=="ibm" or str(key['Key']).split('/')[0]=="citynetwork" or str(key['Key']).split('/')[0]=="x-ion"):
+    if(str(key['Key']).split('/')[0]=="google" or str(key['Key']).split('/')[0]=="aws" or str(key['Key']).split('/')[0]=="cloudferro" or str(key['Key']).split('/')[0]=="cloudsigma" or str(key['Key']).split('/')[0]=="azurerm" or str(key['Key']).split('/')[0]=="exoscale" or str(key['Key']).split('/')[0]=="ionoscloud" or str(key['Key']).split('/')[0]=="oci" or str(key['Key']).split('/')[0]=="opentelekomcloud" or str(key['Key']).split('/')[0]=="ovh" or str(key['Key']).split('/')[0]=="ibm" or str(key['Key']).split('/')[0]=="citynetwork" or str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
 
         if(str(key['Key']).split('/')[-2]!="detailed") and str(str(key['Key']).split('/')[-1]).split('.')[-1]=="json":
             source_general = str(key['Key']).split('/')[0]+"/"+str(key['Key']).split('/')[1]+"/general.json"
@@ -67,11 +67,9 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                         if(str(df_general["info"]).find("'region'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["region"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                    
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
-                            f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["datacenter"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                    
-                        
-                    elif(str(key['Key']).split('/')[0]=="x-ion"):
+                            f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["datacenter"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                     
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                    
-                
                     else:
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["zone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+", "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")
                     f.close
@@ -122,6 +120,9 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                     elif(str(key['Key']).split('/')[0]=="citynetwork"):
                         if df_perfsonar[4]['succeeded']!=False:
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["region"]+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+", "+str(df_perfsonar[5]['summary']['summary']['throughput-bits']/1000000000)+"\n")
+                    elif(str(key['Key']).split('/')[0]=="flexibleengine"):
+                        if df_perfsonar[4]['succeeded']!=False:
+                            f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+", "+str(df_perfsonar[5]['summary']['summary']['throughput-bits']/1000000000)+"\n")
                     else:
                         if df_perfsonar[3]['succeeded']!=False:                        
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["zone"]+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[3]['summary']['summary']['throughput-bits']/1000000000)+","+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+"\n") 
@@ -152,7 +153,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["datacenter"]+", "+str(key['Key']).split('/')[1]+", "+str(df_dodas["result"])+"\n")
 
-                    elif(str(key['Key']).split('/')[0]=="x-ion"):
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_dodas["result"])+"\n")
                     
                     else:
@@ -184,7 +185,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+str(df_general["info"]['datacenter'])+", "+str(key['Key']).split('/')[1]+", "+str(df_data_repatriation["result"])+"\n")                    
 
-                    elif(str(key['Key']).split('/')[0]=="x-ion"):
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_data_repatriation["result"])+"\n")                    
                     
                     else:
@@ -193,8 +194,23 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 gc.collect()
 
             if str(df_general["testsCatalog"]["proGANTest"]["run"])=="True":
-                print("Fetching proGAN Test Results")
+                print("Fetching proGAN Test Results "+str(key['Key']).split('/')[1])
+                source_progan = str(key['Key']).split('/')[0]+"/"+str(key['Key']).split('/')[1]+"/detailed/time.json"
+                obj_progan=client_s3.get_object(Bucket='ocre-results', Key=source_progan)
+                df_progan = json.load(io.BytesIO(obj_progan['Body'].read()))            
+                obj_general=client_s3.get_object(Bucket='ocre-results', Key=source_general)
+                df_general = json.load(io.BytesIO(obj_general['Body'].read()))
+                gc.collect()
 
+                with open('/tmp/summary_progan.csv', 'a+') as f:                    
+                    if(str(key['Key']).split('/')[0]=="ovh"):
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["region"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", nvidia-tesla-v100"+", 1"+", "+str(df_progan["time"])+"\n")
+                    elif(str(key['Key']).split('/')[0]=="flexibleengine"):
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["availabilityZone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", nvidia-tesla-v100"+", 1"+", "+str(df_progan["time"])+"\n")                   
+                    else:
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["zone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", "+str(df_general["info"]["gpuType"])+", "+str(df_general["info"]["gpusPerNode"])+", "+str(df_progan["time"])+"\n")
+                    f.close()
+                        
             if str(df_general["testsCatalog"]["dlTest"]["run"])=="True":
                 print("Fetching DL Test Results")
 
