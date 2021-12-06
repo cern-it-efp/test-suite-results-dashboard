@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 import plotly.express as px
 from st_aggrid import AgGrid
-import webbrowser
 from bokeh.models.widgets import Div
 
 pd.set_option('display.max_columns', None)
