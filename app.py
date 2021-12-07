@@ -49,8 +49,8 @@ div[data-baseweb="select"] > div {
 
 
 #b = st.button("Link to Repository")
-st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/), is intended to be used to test and validate commercial cloud services across the stack for research and education environments and it is being used as a validation tool for commercial cloud services procurement in European Commission sponsored projects such as [OCRE](https://ocre-project.eu/), [ARCHIVER](https://archiver-project.eu/) and [CloudBank EU](https://ngiatlantic.eu/funded-experiments/cloudbank-eu-ngi)')
-st.write('Visit [EOSC website](https://eosc.eu/) for more information.')
+st.write('The EOSC Test Suite, developed by [CERN](https://home.cern/),, is intended to be used to test and validate commercial cloud services for research and education workloads. It is being actively used as a validation tool for commercial cloud services procured via European Commission sponsored projects such as [OCRE](https://ocre-project.eu/), [ARCHIVER](https://archiver-project.eu/) and [CloudBank EU](https://ngiatlantic.eu/funded-experiments/cloudbank-eu-ngi)')
+st.write('To learn more about EOSC please visit the [EOSC Association website](https://eosc.eu/) for more information.')
 if st.button('EOSC Test Suite Repository'):
     js = "window.open('https://github.com/cern-it-efp/EOSC-Testsuite')"  # New tab or window
     js = "window.location.href = 'https://github.com/cern-it-efp/EOSC-Testsuite'"  # Current tab
@@ -142,12 +142,66 @@ if (provider_name!=''):
     #st.markdown("""<hr style="height:5px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     #st.dataframe(df_cpd)
+    if (str(provider_name)=="ovh"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        df_cost_1 = pd.read_csv('/tmp/ovh.03-12-2021.de.csv')
+        df_cost_2 = pd.read_csv('/tmp/ovh.03-12-2021.sbg.csv')
+        df_cost_3 = pd.read_csv('/tmp/ovh.03-12-2021.uk.csv')
+        df_cost_4 = pd.read_csv('/tmp/ovh.03-12-2021.waw.csv')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+        st.subheader(str(df_cost_2).split('.')[-2])
+        AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
+        st.subheader(str(df_cost_3).split('.')[-2])
+        AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
+        st.subheader(str(df_cost_4).split('.')[-2])
+        AgGrid(df_cost_4, height = 250, fit_columns_on_grid_load=False)
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
     if (str(provider_name)=="x-ion"):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost = pd.read_csv('cosbench_demo/s3-main_CERN_to_xion.csv')
-        #df_cost_bench = df_cost
+        df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
         AgGrid(df_cost, height = 250, fit_columns_on_grid_load=False)
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
+    if (str(provider_name)=="google"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
+    if (str(provider_name)=="exoscale"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        df_cost_1 = pd.read_csv('/tmp/xoscale.03-12-2021.at-vie-1.csv')
+        df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
+        df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+        st.subheader(str(df_cost_2).split('.')[-2])
+        AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
+        st.subheader(str(df_cost_3).split('.')[-2])
+        AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+
+    if (str(provider_name)=="orange"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        df_cost_1 = pd.read_csv('/tmp/flexibleengine.03-12-2021.eu-west-0.csv')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+
+    if (str(provider_name)=="ionoscloud"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        df_cost_1 = pd.read_csv('/tmp/ionoscloud.03-12-2021.de-fra.csv')
+        st.header('Cloud Object Storage Benchmark (COSBench)')
+        st.subheader(str(df_cost_1).split('.')[-2])
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
     st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     st.header('Dynamic On Demand Analysis Services test (DODAS) Test Results')

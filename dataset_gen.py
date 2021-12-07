@@ -32,6 +32,25 @@ client_s3=boto3.client(
     endpoint_url="https://s3.cern.ch"
 )
 
+s3r = boto3.resource('s3', aws_access_key_id=OPENSTACK_ACC,aws_secret_access_key=OPENSTACK_KEY, endpoint_url="https://s3.cern.ch")
+your_bucket = s3r.Bucket('ocre-results')
+
+# Iterate All Objects in Your S3 Bucket Over the for Loop
+for s3_object in your_bucket.objects.filter(Prefix='cosbench'):
+
+    #use below three line ONLY if you have sub directories available in S3 Bucket
+    #Split the Object key and the file name.
+    #parent directories will be stored in path and Filename will be stored in the filename
+  
+    #path, filename = os.path.split(s3_object.key)
+    path = str(s3_object.key).split('/')[0]
+    filename = str(s3_object.key).split('/')[1]
+    
+    #Download the file in the sub directories or directory if its available. 
+    your_bucket.download_file(s3_object.key, filename)
+
+os.system('mv *.csv /tmp/.')
+
 cloud_platform_details = "Cloud Platforms Details - Sheet1_min.csv"
 obj_cpd=client_s3.get_object(Bucket='ocre-results', Key=cloud_platform_details)
 df_cpd = pd.read_csv(io.BytesIO(obj_cpd['Body'].read()))
@@ -217,7 +236,6 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
             if str(df_general["testsCatalog"]["hpcTest"]["run"])=="True":
                 print("Fetching HPC Test Results")
         gc.collect()
-
     gc.collect()
 
 os.system("echo PORT $PORT")
