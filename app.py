@@ -244,7 +244,7 @@ if (provider_name!=''):
     st.write('Benchmarking relying on a suite containing several High Energy Physics (HEP) based benchmarks.')
     if st.button('More Information', key = 3):
         js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking')"  # New tab or window
-        js = "https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking'"  # Current tab
+        js = "window.location.href = https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cpu-benchmarking'"  # Current tab
         html = '<img src onerror="{}">'.format(js)
         div = Div(text=html)
         st.bokeh_chart(div)
@@ -258,7 +258,7 @@ if (provider_name!=''):
     st.write('In this test, a perfSONAR testpoint is created using a containerised approach on the cloud provider infrastructure.')
     if st.button('More Information', key = 4):
         js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements')"  # New tab or window
-        js = "https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements'"  # Current tab
+        js = "window.location.href = https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#networking-performance-measurements'"  # Current tab
         html = '<img src onerror="{}">'.format(js)
         div = Div(text=html)
         st.bokeh_chart(div)
@@ -278,7 +278,7 @@ if (provider_name!=''):
         st.write('Algorithm training of an advanced GAN model (ProGAN). This benchmark is run on a single virtual machine, with a single NVIDIA V100 GPU.')
         if st.button('More Information', key = 5):
             js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus')"  # New tab or window
-            js = "https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus'"  # Current tab
+            js = "window.location.href = https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#progressive-growing-of-gans-using-gpus'"  # Current tab
             html = '<img src onerror="{}">'.format(js)
             div = Div(text=html)
             st.bokeh_chart(div)
