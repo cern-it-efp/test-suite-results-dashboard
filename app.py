@@ -163,29 +163,29 @@ if (provider_name!=''):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
-        AgGrid(df_cost, height = 250, fit_columns_on_grid_load=False)
+        st.subheader('hamburg')
+        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
-    if (str(provider_name)=="google"):
+    if (str(provider_name)=="google cloud platform"):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
+        st.subheader('default')
         AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     if (str(provider_name)=="exoscale"):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/xoscale.03-12-2021.at-vie-1.csv')
+        df_cost_1 = pd.read_csv('/tmp/exoscale.03-12-2021.at-vie-1.csv')
         df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
         df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
+        st.subheader('at-vie-1')
         AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-        st.subheader(str(df_cost_2).split('.')[-2])
+        st.subheader('ch-gva-2')
         AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
-        st.subheader(str(df_cost_3).split('.')[-2])
+        st.subheader('cde-fra-1')
         AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
@@ -193,14 +193,14 @@ if (provider_name!=''):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         df_cost_1 = pd.read_csv('/tmp/flexibleengine.03-12-2021.eu-west-0.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
+        st.subheader('eu-west-0')
         AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
     if (str(provider_name)=="ionoscloud"):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         df_cost_1 = pd.read_csv('/tmp/ionoscloud.03-12-2021.de-fra.csv')
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
+        st.subheader('de-fra')
         AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
     st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
