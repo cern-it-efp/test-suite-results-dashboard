@@ -145,7 +145,7 @@ if (provider_name!=''):
     if (str(provider_name)=="ovh") or (str(provider_name)=="x-ion") or (str(provider_name)=="exoscale") or (str(provider_name)=="orange") or (str(provider_name)=="google cloud platform") or (str(provider_name)=="ionoscloud"):
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.write(' Benchmarking of Object Storage services based on [COSBench](https://github.com/intel-cloud/cosbench). Each table below shows multiple measurements of metrics such as operation and byte count, average response time, average processing time, throughput, bandwidth and success ratio taken at different moments while performing writing and reading operations.')
+        st.write('Benchmarking of Object Storage services based on [COSBench](https://github.com/intel-cloud/cosbench). Each table below shows multiple measurements of metrics such as operation and byte count, average response time, average processing time, throughput, bandwidth and success ratio taken at different moments while performing writing and reading operations. The source of the writing and reading operations is a virtual machine running on the CERN cloud (in Geneva, Switzerland).')
         if st.button('More Information', key = 6):
             js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cloud-object-storage-benchmark-cosbench')"  # New tab or window
             js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cloud-object-storage-benchmark-cosbench'"  # Current tab
