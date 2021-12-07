@@ -142,67 +142,75 @@ if (provider_name!=''):
     #st.markdown("""<hr style="height:5px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     #st.dataframe(df_cpd)
-    if (str(provider_name)=="ovh"):
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/ovh.03-12-2021.de.csv')
-        df_cost_2 = pd.read_csv('/tmp/ovh.03-12-2021.sbg.csv')
-        df_cost_3 = pd.read_csv('/tmp/ovh.03-12-2021.uk.csv')
-        df_cost_4 = pd.read_csv('/tmp/ovh.03-12-2021.waw.csv')
+    if (str(provider_name)=="ovh") or (str(provider_name)=="x-ion") or (str(provider_name)=="exoscale") or (str(provider_name)=="orange") or (str(provider_name)=="google cloud platform") or (str(provider_name)=="ionoscloud"):
         st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader(str(df_cost_1).split('.')[-2])
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-        st.subheader(str(df_cost_2).split('.')[-2])
-        AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
-        st.subheader(str(df_cost_3).split('.')[-2])
-        AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
-        st.subheader(str(df_cost_4).split('.')[-2])
-        AgGrid(df_cost_4, height = 250, fit_columns_on_grid_load=False)
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        st.write(' Benchmarking of Object Storage services based on [COSBench](https://github.com/intel-cloud/cosbench). Each table below shows multiple measurements of metrics such as operation and byte count, average response time, average processing time, throughput, bandwidth and success ratio taken at different moments while performing writing and reading operations.')
+        if st.button('More Information', key = 6):
+            js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cloud-object-storage-benchmark-cosbench')"  # New tab or window
+            js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#cloud-object-storage-benchmark-cosbench'"  # Current tab
+            html = '<img src onerror="{}">'.format(js)
+            div = Div(text=html)
+            st.bokeh_chart(div)
+            
+        if (str(provider_name)=="ovh"):
+            df_cost_1 = pd.read_csv('/tmp/ovh.03-12-2021.de.csv')
+            df_cost_2 = pd.read_csv('/tmp/ovh.03-12-2021.sbg.csv')
+            df_cost_3 = pd.read_csv('/tmp/ovh.03-12-2021.uk.csv')
+            df_cost_4 = pd.read_csv('/tmp/ovh.03-12-2021.waw.csv')
+            st.subheader('Region: de')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: sbg')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: uk')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: waw')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_4, height = 250, fit_columns_on_grid_load=False)
+            
+        if (str(provider_name)=="x-ion"):
+            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+            df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
+            st.subheader('Region: hamburg')
+            st.write('Run Date: 06-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
-    if (str(provider_name)=="x-ion"):
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
-        st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader('hamburg')
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        if (str(provider_name)=="google cloud platform"):
+            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+            df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
+            st.subheader('Region: default')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
-    if (str(provider_name)=="google cloud platform"):
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
-        st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader('default')
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        if (str(provider_name)=="exoscale"):
+            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+            df_cost_1 = pd.read_csv('/tmp/exoscale.03-12-2021.at-vie-1.csv')
+            df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
+            df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
+            st.subheader('Region: at-vie-1')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: ch-gva-2')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: de-fra-1')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
 
-    if (str(provider_name)=="exoscale"):
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/exoscale.03-12-2021.at-vie-1.csv')
-        df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
-        df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
-        st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader('at-vie-1')
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-        st.subheader('ch-gva-2')
-        AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
-        st.subheader('cde-fra-1')
-        AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        if (str(provider_name)=="orange"):
+            df_cost_1 = pd.read_csv('/tmp/flexibleengine.03-12-2021.eu-west-0.csv')
+            st.subheader('Region: eu-west-0')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
-    if (str(provider_name)=="orange"):
+        if (str(provider_name)=="ionoscloud"):
+            df_cost_1 = pd.read_csv('/tmp/ionoscloud.03-12-2021.de-fra.csv')
+            st.subheader('Region: de-fra')
+            st.write('Run Date: 03-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/flexibleengine.03-12-2021.eu-west-0.csv')
-        st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader('eu-west-0')
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-
-    if (str(provider_name)=="ionoscloud"):
-        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
-        df_cost_1 = pd.read_csv('/tmp/ionoscloud.03-12-2021.de-fra.csv')
-        st.header('Cloud Object Storage Benchmark (COSBench)')
-        st.subheader('de-fra')
-        AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
-    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     st.header('Dynamic On Demand Analysis Services test (DODAS) Test Results')
     st.write('DODAS is a system designed to provide a high level of automation in terms of provisioning, creating, managing and accessing a pool of heterogeneous computing and storage resources, by generating clusters on demand for the execution of HTCondor workload management system. DODAS allows to seamlessly join the HTCondor Global Pool of CMS to enable the dynamic extension of existing computing resources. A benefit of such an architecture is that it provides high scaling capabilities and self-healing support that results in a drastic reduction of time and cost, through setup and operational efficiency increases.')
