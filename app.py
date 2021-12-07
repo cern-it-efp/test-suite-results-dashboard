@@ -143,6 +143,7 @@ if (provider_name!=''):
 
     #st.dataframe(df_cpd)
     if (str(provider_name)=="ovh") or (str(provider_name)=="x-ion") or (str(provider_name)=="exoscale") or (str(provider_name)=="orange") or (str(provider_name)=="google cloud platform") or (str(provider_name)=="ionoscloud"):
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
         st.header('Cloud Object Storage Benchmark (COSBench)')
         st.write(' Benchmarking of Object Storage services based on [COSBench](https://github.com/intel-cloud/cosbench). Each table below shows multiple measurements of metrics such as operation and byte count, average response time, average processing time, throughput, bandwidth and success ratio taken at different moments while performing writing and reading operations.')
         if st.button('More Information', key = 6):
@@ -171,21 +172,18 @@ if (provider_name!=''):
             AgGrid(df_cost_4, height = 250, fit_columns_on_grid_load=False)
             
         if (str(provider_name)=="x-ion"):
-            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
             df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
             st.subheader('Region: hamburg')
             st.write('Run Date: 06-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="google cloud platform"):
-            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
             df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
             st.subheader('Region: default')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="exoscale"):
-            st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
             df_cost_1 = pd.read_csv('/tmp/exoscale.03-12-2021.at-vie-1.csv')
             df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
             df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
