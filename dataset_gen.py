@@ -87,7 +87,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["region"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                    
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["datacenter"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                     
-                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+", "+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+",  "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"]).replace(",", " ")+",   "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")                    
                     else:
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["zone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_cpu_bench["profiles"]["hepscore"]["score"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["score_per_core"])+", "+str(df_cpu_bench["host"]["HW"]["CPU"]["CPU_Model"])+",  "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["start_at"])+", "+str(df_cpu_bench["profiles"]["hepscore"]["environment"]["end_at"])+"\n")
@@ -139,7 +139,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                     elif(str(key['Key']).split('/')[0]=="citynetwork"):
                         if df_perfsonar[4]['succeeded']!=False:
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["region"]+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+", "+str(df_perfsonar[5]['summary']['summary']['throughput-bits']/1000000000)+"\n")
-                    elif(str(key['Key']).split('/')[0]=="flexibleengine"):
+                    elif(str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
                         if df_perfsonar[4]['succeeded']!=False:
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(str(df_perfsonar[0]["max"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["mean"]).replace("PT","")).replace("S","")+", "+str(str(df_perfsonar[0]["min"]).replace("PT","")).replace("S","")+", "+str(df_perfsonar[4]['summary']['summary']['throughput-bits']/1000000000)+", "+str(df_perfsonar[5]['summary']['summary']['throughput-bits']/1000000000)+"\n")
                     else:
@@ -172,7 +172,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["datacenter"]+", "+str(key['Key']).split('/')[1]+", "+str(df_dodas["result"])+"\n")
 
-                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_dodas["result"])+"\n")
                     
                     else:
@@ -204,7 +204,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                         elif(str(df_general["info"]).find("'datacenter'")!=-1):
                             f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+str(df_general["info"]['datacenter'])+", "+str(key['Key']).split('/')[1]+", "+str(df_data_repatriation["result"])+"\n")                    
 
-                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine"):
+                    elif(str(key['Key']).split('/')[0]=="x-ion" or str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["info"]["flavor"])+', '+df_general["info"]["availabilityZone"]+", "+str(key['Key']).split('/')[1]+", "+str(df_data_repatriation["result"])+"\n")                    
                     
                     else:

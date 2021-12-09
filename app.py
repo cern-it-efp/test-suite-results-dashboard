@@ -208,6 +208,20 @@ if (provider_name!=''):
             st.subheader('Region: de-fra')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+        if (str(provider_name)=="aws"):
+            df_cost_1 = pd.read_csv('/tmp/aws.08-12-2021.ap-northeast-1.csv')
+            df_cost_2 = pd.read_csv('/tmp/aws.08-12-2021.eu-west-1.csv')
+            df_cost_3 = pd.read_csv('/tmp/aws.08-12-2021.us-east-1.csv')
+            st.subheader('Region: ap-northeast-1')
+            st.write('Run Date: 08-12-2021')
+            AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: eu-west-1')
+            st.write('Run Date: 08-12-2021')
+            AgGrid(df_cost_2, height = 250, fit_columns_on_grid_load=False)
+            st.subheader('Region: us-east-1')
+            st.write('Run Date: 08-12-2021')
+            AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
+        
         st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     st.header('Dynamic On Demand Analysis Services test (DODAS) Test Results')
