@@ -224,7 +224,7 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                 with open('/tmp/summary_progan.csv', 'a+') as f:                    
                     if(str(key['Key']).split('/')[0]=="ovh"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["region"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", nvidia-tesla-v100"+", 1"+", "+str(df_progan["time"])+"\n")
-                    elif(str(key['Key']).split('/')[0]=="flexibleengine"):
+                    elif(str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["availabilityZone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", nvidia-tesla-v100"+", 1"+", "+str(df_progan["time"])+"\n")                   
                     else:
                         f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["proGANTest"]["flavor"])+', '+str(df_general["info"]["zone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["proGANTest"]["images_amount"])+", "+str(df_general["testsCatalog"]["proGANTest"]["kimg"])+", "+str(df_general["info"]["gpuType"])+", "+str(df_general["info"]["gpusPerNode"])+", "+str(df_progan["time"])+"\n")
