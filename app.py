@@ -121,6 +121,9 @@ if (provider_name!=''):
     df_progan = df_progan.loc[df_progan.Provider == provider_name]
     df_progan = df_progan.drop_duplicates(subset=['Location'], keep='first')
     
+    df_dltest =  df_dltest.loc[df_dltest.Provider == provider_name]
+    df_dltest =  df_dltest.drop_duplicates(subset=['Location'], keep='first')
+
     df_cpd = df_cpd.loc[df_cpd.Vendor == provider_name]
     df_perf_rtt = df_perfsonar[['Provider','Flavor','Location','Run Date','Max Latency (ms)','Min Latency (ms)','Mean Latency (ms)']]
     df_perf_bwt = df_perfsonar[['Provider','Flavor','Location','Run Date','Bandwidth From CERN To Provider (Gbps)','Bandwidth From Provider To CERN (Gbps)']]
