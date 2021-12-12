@@ -68,6 +68,7 @@ df_perfsonar = pd.read_csv('/tmp/summary_perfsonar.csv', names = ['Provider','Fl
 df_dodas = pd.read_csv('/tmp/summary_dodas.csv', names=['Provider','Flavor','Location','Run Date','Result'])
 df_data_repatriation = pd.read_csv('/tmp/summary_data_repatriation.csv', names=['Provider','Flavor','Location','Run Date','Result'])
 df_progan = pd.read_csv('/tmp/summary_progan.csv',names = ['Provider','Flavor','Location','Run Date','Images Amount','Kimg','GPU Type','GPU per Nodes','Time (Minutes)'])
+df_dltest = pd.read_csv('/tmp/summary_dltest.csv',names = ['Provider','Flavor','Location','Run Date','Dataset Size','Epochs','Time (Minutes)'])
 df_cpd = pd.read_csv('/tmp/cpd.csv')
 
 df_cpu_bmk['Provider'] = df_cpu_bmk['Provider'].replace({'google':'google cloud platform'})
@@ -80,6 +81,8 @@ df_data_repatriation['Provider'] = df_data_repatriation['Provider'].replace({'go
 df_data_repatriation['Provider'] = df_data_repatriation['Provider'].replace({'flexibleengine':'orange'})
 df_progan['Provider'] = df_progan['Provider'].replace({'google':'google cloud platform'})
 df_progan['Provider'] = df_progan['Provider'].replace({'flexibleengine':'orange'})
+df_dltest['Provider'] = df_dltest['Provider'].replace({'google':'google cloud platform'})
+df_dltest['Provider'] = df_dltest['Provider'].replace({'flexibleengine':'orange'})
 df_cpd['Vendor'] = df_cpd['Vendor'].replace({'google':'google cloud platform'})
 df_cpd['Vendor'] = df_cpd['Vendor'].replace({'flexibleengine':'orange'})
 
@@ -87,13 +90,14 @@ df_perfsonar['Max Latency (ms)'] = 1000*df_perfsonar['Max Latency (ms)']
 df_perfsonar['Min Latency (ms)'] = 1000*df_perfsonar['Min Latency (ms)']
 df_perfsonar['Mean Latency (ms)'] = 1000*df_perfsonar['Mean Latency (ms)']
 df_progan['Time (Minutes)'] = df_progan['Time (Minutes)']/60
+df_dltest['Time (Minutes)'] = df_dltest['Time (Minutes)']/60
 
 df_cpu_bmk = df_cpu_bmk.sort_values(by=['Run Date'],ascending = False)
 df_perfsonar = df_perfsonar.sort_values(by=['Run Date'],ascending = False)
 df_dodas = df_dodas.sort_values(by=['Run Date'],ascending = False)
 df_data_repatriation = df_data_repatriation.sort_values(by=['Run Date'],ascending = False)
 df_progan = df_progan.sort_values(by=['Run Date'],ascending = False)
-
+df_dltest = df_dltest.sort_values(by=['Run Date'],ascending = False)
 df_data_repatriation.loc[-1] = ['',0,0,0,0]
 df_data_repatriation.index = df_data_repatriation.index+1
 df_data_repatriation.sort_index(inplace=True)
@@ -146,7 +150,7 @@ if (provider_name!=''):
     st.write('- **GPUs:** indicates whether the vendor offers GPU-powered virtual machines.')
     st.write('- **AI Images:** indicates whether the vendor offers images for the virtual machines including GPU drivers and Machine Learning / Artificial Intelligence related libraries such as Tensorflow.')
     AgGrid(df_cpd, height = 75, fit_columns_on_grid_load=False)
-    st.markdown("""<hr style="height:5px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+    st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
 
     #st.dataframe(df_cpd)
     if (str(provider_name)=="ovh") or (str(provider_name)=="x-ion") or (str(provider_name)=="exoscale") or (str(provider_name)=="orange") or (str(provider_name)=="google cloud platform") or (str(provider_name)=="ionoscloud"):
@@ -305,6 +309,18 @@ if (provider_name!=''):
         AgGrid(df_progan, height = 150.0001, fit_columns_on_grid_load=False)
         #st.plotly_chart(fig_progan,config= {'displaylogo': False})
 
+    if len(df_dltest)>0:
+        st.markdown("""<hr style="height:2px;border:none;color:#ffc107;background-color:#ffc107;" /> """, unsafe_allow_html=True)
+        st.header('Distributed training of an advanced GAN model (NNLO) Test Results')
+        st.write('This benchmark was run on a GPU cluster conformed by 6 virtual machines, each one having a single NVIDIA V100 GPU.')
+        if st.button('More Information', key = 7):
+            js = "window.open('https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#distributed-training-of-a-gan-using-gpus')"  # New tab or window
+            js = "window.location.href = 'https://eosc-testsuite.readthedocs.io/en/latest/testsCatalog.html#distributed-training-of-a-gan-using-gpus'"  # Current tab
+            html = '<img src onerror="{}">'.format(js)
+            div = Div(text=html)
+            st.bokeh_chart(div)
+        AgGrid(df_dltest, height = 150.00001, fit_columns_on_grid_load=False)
+        
 
 hide_streamlit_style = """
             <style>

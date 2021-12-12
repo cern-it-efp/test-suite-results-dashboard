@@ -231,7 +231,21 @@ for key in client_s3.list_objects(Bucket='ocre-results')['Contents']:
                     f.close()
                         
             if str(df_general["testsCatalog"]["dlTest"]["run"])=="True":
-                print("Fetching DL Test Results")
+                print("Fetching DL Test Results"+str(key['Key']).split('/')[1])
+                source_dltest = str(key['Key']).split('/')[0]+"/"+str(key['Key']).split('/')[1]+"/detailed/bb_train_history.json"
+                obj_dltest=client_s3.get_object(Bucket='ocre-results', Key=source_dltest)
+                df_dltest = json.load(io.BytesIO(obj_dltest['Body'].read()))            
+                obj_general=client_s3.get_object(Bucket='ocre-results', Key=source_general)
+                df_general = json.load(io.BytesIO(obj_general['Body'].read()))
+                gc.collect()
+                with open('/tmp/summary_dltest.csv','a+') as f:
+                    if(str(key['Key']).split('/')[0]=="ovh"):
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["dlTest"]["flavor"])+', '+str(df_general["info"]["region"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["dlTest"]["datasetSize"])+", "+str(df_general["testsCatalog"]["dlTest"]["epochs"])+", "+str(df_dltest["train_time"])+"\n")
+                    elif(str(key['Key']).split('/')[0]=="flexibleengine" or str(key['Key']).split('/')[0]=="aws"):
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["dlTest"]["flavor"])+', '+str(df_general["info"]["availabilityZone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["dlTest"]["datasetSize"])+", "+str(df_general["testsCatalog"]["dlTest"]["epochs"])+", "+str(df_dltest["train_time"])+"\n")                   
+                    else:
+                        f.write(str(key['Key']).split('/')[0]+", "+str(df_general["testsCatalog"]["dlTest"]["flavor"])+', '+str(df_general["info"]["zone"])+", "+str(key['Key']).split('/')[1]+", "+str(df_general["testsCatalog"]["dlTest"]["datasetSize"])+", "+str(df_general["testsCatalog"]["dlTest"]["epochs"])+", "+str(df_dltest["train_time"])+"\n")
+                    f.close()
 
             if str(df_general["testsCatalog"]["hpcTest"]["run"])=="True":
                 print("Fetching HPC Test Results")
