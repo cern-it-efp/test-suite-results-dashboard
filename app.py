@@ -15,7 +15,7 @@ image = Image.open('logo_diff.png')
 st.set_page_config(page_title='EOSC Testsuite Results Dashboard',page_icon=image,layout='wide',initial_sidebar_state='auto')
 #st.write('<style>body { margin: 0; font-family: Arial, Helvetica, sans-serif;} .header{padding: 40px 50%; background: #264899; color: #f1f1f1; position:;top:100;} .header img {float: left; width:100px;height:100px;} .sticky { position: fixed; top: 0; width: 100%;} </style><div class="header" id="myHeader"></div>', unsafe_allow_html=True)
 
-#os.system('python dataset_gen.py')
+#os.system('python dataset_gen.py') 
 # simple description
 # display media
 #st.image(image, caption='source: https://pixabay.com/photos/mario-luigi-yoschi-figures-funny-1557240/',
