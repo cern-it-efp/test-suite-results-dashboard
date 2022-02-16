@@ -167,10 +167,10 @@ if (provider_name!=''):
             st.bokeh_chart(div)
             
         if (str(provider_name)=="ovh"):
-            df_cost_1 = pd.read_csv('/tmp/ovh.03-12-2021.de.csv')
-            df_cost_2 = pd.read_csv('/tmp/ovh.03-12-2021.sbg.csv')
-            df_cost_3 = pd.read_csv('/tmp/ovh.03-12-2021.uk.csv')
-            df_cost_4 = pd.read_csv('/tmp/ovh.03-12-2021.waw.csv')
+            df_cost_1 = pd.read_csv('ovh.03-12-2021.de.csv')
+            df_cost_2 = pd.read_csv('ovh.03-12-2021.sbg.csv')
+            df_cost_3 = pd.read_csv('ovh.03-12-2021.uk.csv')
+            df_cost_4 = pd.read_csv('ovh.03-12-2021.waw.csv')
             st.subheader('Region: de')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
@@ -185,21 +185,21 @@ if (provider_name!=''):
             AgGrid(df_cost_4, height = 250, fit_columns_on_grid_load=False)
             
         if (str(provider_name)=="x-ion"):
-            df_cost_1 = pd.read_csv('/tmp/xion.06-12-2021.hamburg.csv')
+            df_cost_1 = pd.read_csv('xion.06-12-2021.hamburg.csv')
             st.subheader('Region: hamburg')
             st.write('Run Date: 06-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="google cloud platform"):
-            df_cost_1 = pd.read_csv('/tmp/google.03-12-2021.default.csv')
+            df_cost_1 = pd.read_csv('google.03-12-2021.default.csv')
             st.subheader('Region: default')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="exoscale"):
-            df_cost_1 = pd.read_csv('/tmp/exoscale.03-12-2021.at-vie-1.csv')
-            df_cost_2 = pd.read_csv('/tmp/exoscale.03-12-2021.ch-gva-2.csv')
-            df_cost_3 = pd.read_csv('/tmp/exoscale.03-12-2021.de-fra-1.csv')
+            df_cost_1 = pd.read_csv('exoscale.03-12-2021.at-vie-1.csv')
+            df_cost_2 = pd.read_csv('exoscale.03-12-2021.ch-gva-2.csv')
+            df_cost_3 = pd.read_csv('exoscale.03-12-2021.de-fra-1.csv')
             st.subheader('Region: at-vie-1')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
@@ -211,20 +211,20 @@ if (provider_name!=''):
             AgGrid(df_cost_3, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="orange"):
-            df_cost_1 = pd.read_csv('/tmp/flexibleengine.03-12-2021.eu-west-0.csv')
+            df_cost_1 = pd.read_csv('flexibleengine.03-12-2021.eu-west-0.csv')
             st.subheader('Region: eu-west-0')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
 
         if (str(provider_name)=="ionoscloud"):
-            df_cost_1 = pd.read_csv('/tmp/ionoscloud.03-12-2021.de-fra.csv')
+            df_cost_1 = pd.read_csv('ionoscloud.03-12-2021.de-fra.csv')
             st.subheader('Region: de-fra')
             st.write('Run Date: 03-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
         if (str(provider_name)=="aws"):
-            df_cost_1 = pd.read_csv('/tmp/aws.08-12-2021.ap-northeast-1.csv')
-            df_cost_2 = pd.read_csv('/tmp/aws.08-12-2021.eu-west-1.csv')
-            df_cost_3 = pd.read_csv('/tmp/aws.08-12-2021.us-east-1.csv')
+            df_cost_1 = pd.read_csv('aws.08-12-2021.ap-northeast-1.csv')
+            df_cost_2 = pd.read_csv('aws.08-12-2021.eu-west-1.csv')
+            df_cost_3 = pd.read_csv('aws.08-12-2021.us-east-1.csv')
             st.subheader('Region: ap-northeast-1')
             st.write('Run Date: 08-12-2021')
             AgGrid(df_cost_1, height = 250, fit_columns_on_grid_load=False)
